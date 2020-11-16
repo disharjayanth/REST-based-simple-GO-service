@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -21,6 +22,7 @@ func main() {
 		Addr: ":" + os.Getenv("PORT"),
 	}
 	http.HandleFunc("/post/", handleRequest)
+	http.HandleFunc("/post/all", handleGetAllPosts)
 	log.Println("Server Started Listening....")
 	server.ListenAndServe()
 }
@@ -118,4 +120,19 @@ func handleDelete(w http.ResponseWriter, r *http.Request) (err error) {
 	}
 	w.WriteHeader(200)
 	return
+}
+
+// Get all posts
+func handleGetAllPosts(w http.ResponseWriter, r *http.Request) {
+	posts, err := retrieveAll()
+	if err != nil {
+		fmt.Println(err)
+	}
+	jsonDataArray, err := json.MarshalIndent(posts, "", "\t")
+	if err != nil {
+		fmt.Println(err)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	w.Write(jsonDataArray)
 }

@@ -43,3 +43,16 @@ func (post *Post) delete() (err error) {
 	_, err = Db.Exec("delete from posts where id = $1", post.ID)
 	return
 }
+
+func retrieveAll() (posts []Post, err error) {
+	rows, err := Db.Query("select * from posts")
+	if err != nil {
+		return
+	}
+	for rows.Next() {
+		var post Post
+		rows.Scan(&post.ID, &post.Content, &post.Author)
+		posts = append(posts, post)
+	}
+	return
+}
