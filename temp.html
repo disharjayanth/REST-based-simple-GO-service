@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html"; charset="utf-8">
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+        <title>Posts</title>
+    </head>
+    <body>
+        <ul>
+            {{ range . }}
+            <li style="list-style: none;">
+                <div class="ui cards">
+                <div class="card">
+                    <div class="content">
+                        <div class="header">{{ .Author }}</div>
+                        <div class="description">{{ .Content }}</div>
+                    </div>
+                </div>
+                </div>
+            </li>
+            {{ end }}
+        </ul>
+    </body>
+</html>

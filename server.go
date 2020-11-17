@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -20,9 +21,10 @@ type Post struct {
 func main() {
 	server := http.Server{
 		Addr: ":" + os.Getenv("PORT"),
+		// Addr: "127.0.0.1:3000",
 	}
 	http.HandleFunc("/post/", handleRequest)
-	http.HandleFunc("/post/all", handleGetAllPosts)
+	http.HandleFunc("/", handleGetAllPosts)
 	log.Println("Server Started Listening....")
 	server.ListenAndServe()
 }
@@ -128,11 +130,7 @@ func handleGetAllPosts(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	jsonDataArray, err := json.MarshalIndent(posts, "", "\t")
-	if err != nil {
-		fmt.Println(err)
-	}
-	w.Header().Set("Content-Type", "application/json")
+	t, _ := template.ParseFiles("temp.html")
 	w.WriteHeader(200)
-	w.Write(jsonDataArray)
+	t.Execute(w, posts)
 }
